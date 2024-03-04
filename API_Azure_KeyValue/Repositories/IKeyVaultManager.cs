@@ -1,7 +1,7 @@
 ﻿namespace API_Azure_KeyValue.Repositories
 {
-    public interface IKeyVaultManager
+    public interface IKeyVaultStoreManager
     {
-        public Task<string> GetSecret(string secretName);
+        public Task<string> GetVaultSecret(string secretName);
     }
 }

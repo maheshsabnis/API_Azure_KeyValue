@@ -5,17 +5,15 @@ namespace API_Azure_KeyValue.Repositories
 {
     public class ProductInfoRepo
     {
-        IKeyVaultManager mgr;
+        IKeyVaultStoreManager mgr;
         EShoppingCodiContext ctx;
 
-        public ProductInfoRepo(IKeyVaultManager mgr, EShoppingCodiContext ctx)
+        public ProductInfoRepo(IKeyVaultStoreManager mgr, EShoppingCodiContext ctx)
         {
             this.mgr = mgr;
             this.ctx = ctx;
 
-            //var conn = this.mgr.GetSecret("connstr").Result;
-
-            //this.ctx.Database.SetConnectionString(conn);
+           
         }
 
 

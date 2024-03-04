@@ -8,12 +8,13 @@ builder.Services.AddAzureClients(azureClientFactoryBuilder =>
 {
     azureClientFactoryBuilder.AddSecretClient(builder.Configuration.GetSection("KeyVault"));
 });
-builder.Services.AddSingleton<IKeyVaultManager, KeyVaultManager>();
+builder.Services.AddSingleton<IKeyVaultStoreManager, KeyVaultStoreManager>();
 builder.Services.AddDbContext<EShoppingCodiContext>(options => 
 {
+    // Read the ConnectionString using the GetVaultSecret() method of  IKeyVaultStoreManager
     IServiceProvider serviceProvider = builder.Services.BuildServiceProvider();
-    var service = serviceProvider.GetService<IKeyVaultManager>();
-    var connectionString = service.GetSecret("connstr").Result;
+    var service = serviceProvider.GetService<IKeyVaultStoreManager>();
+    var connectionString = service.GetVaultSecret("connstr").Result;
     options.UseSqlServer(connectionString);
 });
 builder.Services.AddTransient<ProductInfoRepo>();
@@ -57,7 +58,7 @@ app.MapGet("/weatherforecast", () =>
 .WithName("GetWeatherForecast")
 .WithOpenApi();
 
-app.MapGet("/api/kv", async (IKeyVaultManager _secretManager, string secretName) =>
+app.MapGet("/api/kv", async (IKeyVaultStoreManager _secretManager, string secretName) =>
 {
     try
     {
@@ -68,7 +69,7 @@ app.MapGet("/api/kv", async (IKeyVaultManager _secretManager, string secretName)
 
         string secretValue = await
 
-        _secretManager.GetSecret(secretName);
+        _secretManager.GetVaultSecret(secretName);
 
         if (!string.IsNullOrEmpty(secretValue))
         {

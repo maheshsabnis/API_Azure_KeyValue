@@ -2,14 +2,14 @@
 
 namespace API_Azure_KeyValue.Repositories
 {
-    public class KeyVaultManager : IKeyVaultManager
+    public class KeyVaultStoreManager : IKeyVaultStoreManager
     {
         private readonly SecretClient _secretClient;
-        public KeyVaultManager(SecretClient secretClient)
+        public KeyVaultStoreManager(SecretClient secretClient)
         {
             _secretClient = secretClient;
         }
-        public async Task<string> GetSecret(string secretName)
+        public async Task<string> GetVaultSecret(string secretName)
         {
             try
             {
@@ -17,9 +17,9 @@ namespace API_Azure_KeyValue.Repositories
                 _secretClient.GetSecretAsync(secretName);
                 return keyValueSecret.Value;
             }
-            catch
+            catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
         }
     }
