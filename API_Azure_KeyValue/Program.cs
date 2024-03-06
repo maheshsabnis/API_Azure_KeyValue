@@ -4,10 +4,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Azure;
 
 var builder = WebApplication.CreateBuilder(args);
+//1. Register AzureFactoryClientBuilder class, to read 
+// section from appsettings.json so that we will be able to
+// create a registeration for Azure SDK clients.
 builder.Services.AddAzureClients(azureClientFactoryBuilder =>
 {
     azureClientFactoryBuilder.AddSecretClient(builder.Configuration.GetSection("KeyVault"));
 });
+//2. Register IKeyVaultStoreManager, KeyVaultStoreManager
 builder.Services.AddSingleton<IKeyVaultStoreManager, KeyVaultStoreManager>();
 builder.Services.AddDbContext<EShoppingCodiContext>(options => 
 {

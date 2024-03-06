@@ -12,10 +12,7 @@ namespace API_Azure_KeyValue.Repositories
         {
             this.mgr = mgr;
             this.ctx = ctx;
-
-           
         }
-
 
         public async Task<List<ProductInfo>> GetProducts()
         {
